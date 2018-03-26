@@ -1,0 +1,27 @@
+---
+- name: Create group {{ borg_group }}
+  group:
+    name: "{{ borg_group }}"
+    state: present
+
+- name: Create user {{ borg_user }}
+  user:
+    name: "{{ borg_user }}"
+    shell: /bin/bash
+    home: "{{ borg_home }}"
+    createhome: yes
+    group: "{{ borg_group }}"
+    groups: 
+    state: present
+
+- name: Manage directory permissions and owner
+  file:
+    path: "{{ item }}"
+    owner: "{{ borg_user }}"
+    group: "{{ borg_group }}"
+    mode: 0700
+    state: directory
+  with_items:
+    - "{{ borg_home }}"
+    - "{{ borg_home }}/.ssh"
+    - "{{ borg_pool }}"

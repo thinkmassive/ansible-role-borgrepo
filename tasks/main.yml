@@ -1,2 +1,9 @@
 ---
-# tasks file for borg-repo
+- import_tasks: install.yml
+  tags: borgrepo-install
+
+- import_tasks: user.yml
+  tags: borgrepo-user
+
+- import_tasks: clients.yml
+  tags: borgrepo-clients

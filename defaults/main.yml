@@ -1,2 +1,9 @@
 ---
-# defaults file for borg-repo
+borg_user: backup
+borg_group: backup
+borg_home: /home/{{ borg_user }}
+borg_pool: "{{ borg_home }}/repos"
+borg_auth_users:
+  - host: backupclient
+    pubkey: NOT_A_VALID_PUBKEY
+    passphrase: INSECURE_PASSPHRASE

@@ -1,0 +1,24 @@
+---
+- name: Manage SSH authorized_keys
+  authorized_key:
+    user: "{{ borg_user }}"
+    key: "{{ item.pubkey }}"
+    key_options: 'command="cd {{ borg_pool }}/{{ item.host }};borg serve --restrict-to-path {{ borg_pool }}/{{ item.host }}",restrict'
+  with_items: "{{ borg_auth_users }}"
+
+- name: Manage authorized_keys permissions
+  file:
+    path: "{{ borg_home }}/.ssh/authorized_keys"
+    owner: "{{ borg_user }}"
+    group: "{{ borg_group }}"
+    mode: 0600
+    state: file
+
+- name: Manage repo permissions
+  file: 
+    path: "{{ borg_pool }}/{{ item.host }}"
+    owner: "{{ borg_user }}"
+    group: "{{ borg_group }}"
+    mode: 0700
+    state: directory
+  with_items: "{{ borg_auth_users }}"
